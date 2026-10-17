@@ -68,3 +68,6 @@ Jupyter - Interactive coding and experimentation |
 Clone the repository, navigate to the project folder, and follow the environment setup instructions above.
 
 **Note:** Heroku is an optional deployment platform, and the original Boston Housing dataset has known limitations. Use a dataset that is appropriate for your learning goals and be mindful of its historical biases.
+
+## 🚀Live Application
+[Render] (https://boston-house-pricing-prediction-mder.onrender.com)
