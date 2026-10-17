@@ -1,4 +1,4 @@
-
+ 
 name: Deploy to Render
 
 on:
@@ -19,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Validate Render secret
+      - name: Validate Render deploy hook
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
@@ -34,18 +34,12 @@ jobs:
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          response_code=$(curl \
-            --silent \
+          curl \
+            --fail \
             --show-error \
+            --silent \
             --output /tmp/render-response.txt \
-            --write-out "%{http_code}" \
-            --request POST \
-            "$RENDER_DEPLOY_HOOK_URL")
+            --write-out "HTTP status: %{http_code}\n" \
+            "$RENDER_DEPLOY_HOOK_URL"
 
-          if [ "$response_code" -lt 200 ] || [ "$response_code" -ge 300 ]; then
-            echo "::error::Render returned HTTP $response_code."
-            cat /tmp/render-response.txt
-            exit 1
-          fi
-
-          echo "Render accepted the deployment request (HTTP $response_code)."
+          echo "Render deployment trigger request completed."
