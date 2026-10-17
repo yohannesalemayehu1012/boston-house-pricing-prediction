@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 app=Flask(__name__)
-## Load the model
+## Load th`e model
 with open('linear_regression_model.pkl', 'rb') as file:
     loaded_linear_model = pickle.load(file)
 
