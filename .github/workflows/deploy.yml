@@ -1,5 +1,4 @@
 
-# Automatically deploy the application to Render.
 name: Deploy to Render
 
 on:
@@ -13,24 +12,40 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy to Render
+    name: Trigger Render deployment
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Trigger Render deployment
+      - name: Validate Render secret
         env:
           RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
           if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
-            echo "Error: RENDER_DEPLOY_HOOK_URL secret is not configured."
+            echo "::error::RENDER_DEPLOY_HOOK_URL secret is missing."
             exit 1
           fi
 
-          curl --fail --silent --show-error \
-            --request POST \
-            "$RENDER_DEPLOY_HOOK_URL"
+          echo "Render deploy hook secret is configured."
 
-          echo "Render deployment trigger request sent."
+      - name: Trigger Render deployment
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          response_code=$(curl \
+            --silent \
+            --show-error \
+            --output /tmp/render-response.txt \
+            --write-out "%{http_code}" \
+            --request POST \
+            "$RENDER_DEPLOY_HOOK_URL")
+
+          if [ "$response_code" -lt 200 ] || [ "$response_code" -ge 300 ]; then
+            echo "::error::Render returned HTTP $response_code."
+            cat /tmp/render-response.txt
+            exit 1
+          fi
+
+          echo "Render accepted the deployment request (HTTP $response_code)."
