@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Boston Property Valuation | Educational Tool</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Professional navigation -->
+    <header class="nar-style-header">
+        <a href="{{ url_for('home') }}" class="site-brand">
+            <i class="fa-solid fa-house"></i>
+            <span>Boston Property Valuation</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="#about-valuation">Valuation Guide</a>
+            <a href="#prediction-form">Estimate a Property</a>
+            <a href="#methodology">Our Method</a>
+        </nav>
+    </header>
+
+    <main class="professional-page">
+        <!-- Editorial hero -->
+        <section class="editorial-hero">
+            <div class="editorial-copy">
+                <span class="eyebrow">PROPERTY VALUATION · EDUCATIONAL TOOL</span>
+                <h1>Understanding the value of a home</h1>
+                <p>
+                    Explore how property characteristics can help estimate
+                    housing values. This educational tool uses a trained
+                    machine learning model and historical Boston housing data.
+                </p>
+
+                <a href="#prediction-form" class="primary-link">
+                    Estimate a property
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="editorial-photo"
+                 role="img"
+                 aria-label="Residential property exterior"></div>
+        </section>
+
+        <!-- Educational introduction -->
+        <section class="valuation-intro" id="about-valuation">
+            <span class="section-label">VALUATION EXPLAINED</span>
+            <h2>What determines a property's value?</h2>
+            <p>
+                Property valuation involves examining relevant property
+                characteristics and the conditions affecting a home.
+                Professional appraisals may also consider comparable sales,
+                current market conditions and an inspection of the property.
+            </p>
+            <p>
+                This project takes a different approach: it uses 13 features
+                from a historical Boston housing dataset to generate a
+                statistical estimate. It does not replace a professional
+                appraisal.
+            </p>
+        </section>
+
+        <!-- Existing prediction form -->
+        <section class="prediction-section" id="prediction-form">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">PROPERTY DETAILS</span>
+                    <h2>Tell us about the property</h2>
+                    <p>Complete all 13 fields to generate your prediction.</p>
+                </div>
+
+                <div class="field-count">
+                    <i class="fa-solid fa-list-check"></i>
+                    13 inputs
+                </div>
+            </div>
+
+            <form action="{{ url_for('predict') }}"
+                  method="post"
+                  id="houseForm">
+
+                <div class="input-grid">
+
+                    <div class="form-group">
+                        <label for="CRIM">Crime rate (CRIM)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <input type="number" id="CRIM" name="CRIM"
+                                   placeholder="e.g. 0.00632"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Per-capita crime rate by town</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ZN">Residential land (ZN)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-tree"></i>
+                            <input type="number" id="ZN" name="ZN"
+                                   placeholder="e.g. 18"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Residential land zoning percentage</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="INDUS">Non-retail business (INDUS)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-building"></i>
+                            <input type="number" id="INDUS" name="INDUS"
+                                   placeholder="e.g. 2.31"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Non-retail business acreage proportion</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="CHAS">Charles River (CHAS)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-water"></i>
+                            <select id="CHAS" name="CHAS" required>
+                                <option value="" disabled selected>Select value</option>
+                                <option value="0">0 — Does not border river</option>
+                                <option value="1">1 — Borders river</option>
+                            </select>
+                        </div>
+                        <small>River boundary indicator</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="NOX">Nitric oxide (NOX)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-wind"></i>
+                            <input type="number" id="NOX" name="NOX"
+                                   placeholder="e.g. 0.538"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Nitric oxide concentration</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RM">Average rooms (RM)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-bed"></i>
+                            <input type="number" id="RM" name="RM"
+                                   placeholder="e.g. 6.575"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Average number of rooms per home</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Age">Older homes (AGE)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <input type="number" id="Age" name="Age"
+                                   placeholder="e.g. 65.2"
+                                   step="any" min="0" max="100" required>
+                        </div>
+                        <small>Percentage of older owner-occupied homes</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DIS">Employment distance (DIS)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-route"></i>
+                            <input type="number" id="DIS" name="DIS"
+                                   placeholder="e.g. 4.09"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Weighted distance to employment centers</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RAD">Highway access (RAD)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-road"></i>
+                            <input type="number" id="RAD" name="RAD"
+                                   placeholder="e.g. 1"
+                                   step="1" min="1" required>
+                        </div>
+                        <small>Index of highway accessibility</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="TAX">Property tax (TAX)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            <input type="number" id="TAX" name="TAX"
+                                   placeholder="e.g. 296"
+                                   step="1" min="0" required>
+                        </div>
+                        <small>Property tax rate per $10,000</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="PTRATIO">Pupil-teacher ratio</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <input type="number" id="PTRATIO" name="PTRATIO"
+                                   placeholder="e.g. 15.3"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Town pupil-teacher ratio</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="B">Demographic feature (B)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-users"></i>
+                            <input type="number" id="B" name="B"
+                                   placeholder="e.g. 396.9"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Historical dataset demographic index</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="LSTAT">Lower-status population (LSTAT)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-chart-column"></i>
+                            <input type="number" id="LSTAT" name="LSTAT"
+                                   placeholder="e.g. 4.98"
+                                   step="any" min="0" required>
+                        </div>
+                        <small>Percentage of the population in the dataset's
+                            lower-status category</small>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <p>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Enter values that match the Boston dataset features.
+                    </p>
+
+                    <div class="button-group">
+                        <button type="reset" class="reset-button">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            Clear fields
+                        </button>
+
+                        <button type="submit" class="predict-button">
+                            Predict House Price
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Prediction Result -->
+            {% if prediction_text %}
+            <div class="result-card" role="status" aria-live="polite">
+                <div class="result-icon">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                </div>
+
+                <div class="result-content">
+                    <span class="result-label">YOUR MODEL'S ESTIMATE</span>
+                    <h2>{{ prediction_text }}</h2>
+                    <p>
+                        This is a machine learning estimate based on the
+                        historical Boston housing dataset, not a current
+                        real-estate appraisal.
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+        </section>
+
+        <!-- Methodology -->
+        <section class="methodology-section" id="methodology">
+            <span class="section-label">HOW THE MODEL WORKS</span>
+            <h2>From property data to an estimate</h2>
+
+            <div class="methodology-grid">
+                <article class="methodology-item">
+                    <span class="step-number">01</span>
+                    <h3>Enter property features</h3>
+                    <p>
+                        Supply the 13 numerical features required by the
+                        historical Boston housing model.
+                    </p>
+                </article>
+
+                <article class="methodology-item">
+                    <span class="step-number">02</span>
+                    <h3>Prepare the data</h3>
+                    <p>
+                        The application applies the saved feature scaler
+                        used during model training.
+                    </p>
+                </article>
+
+                <article class="methodology-item">
+                    <span class="step-number">03</span>
+                    <h3>Review the estimate</h3>
+                    <p>
+                        The trained Linear Regression model calculates
+                        a prediction from the submitted features.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <aside class="valuation-notice">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <div>
+                <h3>Important information about this estimate</h3>
+                <p>
+                    This is an educational prediction based on historical
+                    Boston housing data. It is not a current market valuation,
+                    a professional appraisal, or a guarantee of a property's
+                    selling price.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="professional-footer">
+        <span>Boston Property Valuation</span>
+        <span>Educational project built with Flask and scikit-learn.</span>
+    </footer>
+
+</body>
+</html>
